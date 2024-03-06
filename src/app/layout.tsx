@@ -7,6 +7,8 @@ import { Toaster } from '@/components/ui/sonner'
 import { TRPCReactProvider } from '@/trpc/react'
 import MainLayout from './_components/main-layout'
 
+export const runtime = 'edge'
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
