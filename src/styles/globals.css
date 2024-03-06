@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.stroke-color svg path {
+  @apply stroke-current; /* This applies the text color as stroke color */
+}
