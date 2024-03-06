@@ -1,5 +1,6 @@
 'use client'
 
+import { Fragment } from 'react'
 import { unstable_noStore as noStore } from 'next/cache'
 import { useAuth } from '@clerk/nextjs'
 
@@ -19,11 +20,11 @@ export default function Home() {
       {userId ? <NewPost onRefresh={postsQuery.refetch} /> : null}
 
       {postsQuery.data?.map((post) => (
-        <>
-          <Post key={post.id} post={post} />
+        <Fragment key={post.id}>
+          <Post post={post} />
 
           <Separator className='my-10' />
-        </>
+        </Fragment>
       ))}
     </div>
   )
