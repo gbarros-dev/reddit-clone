@@ -12,7 +12,7 @@ type RouteLinkProps = {
 
 export default function RouteLink({ item }: RouteLinkProps) {
   const pathname = usePathname()
-  console.log({ pathname })
+
   const home = pathname.split('/')[1]?.length === 24
   const Icon = item.icon
   const isCurent = (home && item.href === '/') || item.href === pathname
