@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { commentsTable } from '@/server/db/schema'
 import { commentFormSchema } from '@/validators/comments'
-import { createTRPCRouter, protectedProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 export const commentRouter = createTRPCRouter({
   create: protectedProcedure.input(commentFormSchema).mutation(async ({ ctx, input }) => {
@@ -12,7 +12,7 @@ export const commentRouter = createTRPCRouter({
       userId: ctx.auth.userId,
     })
   }),
-  getAllByPost: protectedProcedure.input(z.object({ postId: z.string() })).query(({ ctx, input }) => {
+  getAllByPost: publicProcedure.input(z.object({ postId: z.string() })).query(({ ctx, input }) => {
     return ctx.db.query.commentsTable.findMany({
       where: and(eq(commentsTable.postId, input.postId), sql`${commentsTable.commentId} IS NULL`),
       with: {
@@ -21,7 +21,7 @@ export const commentRouter = createTRPCRouter({
       orderBy: desc(commentsTable.createdAt),
     })
   }),
-  getAllByComment: protectedProcedure.input(z.object({ commentId: z.string() })).query(({ ctx, input }) => {
+  getAllByComment: publicProcedure.input(z.object({ commentId: z.string() })).query(({ ctx, input }) => {
     return ctx.db.query.commentsTable.findMany({
       where: eq(commentsTable.commentId, input.commentId),
       with: {
