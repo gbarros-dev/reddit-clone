@@ -9,6 +9,16 @@ const config = {
   env: {
     appName: 'Reddit Clone',
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 }
 
 export default config
