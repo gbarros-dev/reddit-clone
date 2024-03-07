@@ -48,64 +48,62 @@ export default function PostView({ post }: PostProps) {
   }
 
   return (
-    <>
-      <div className='mb-10 flex'>
-        {/* votes */}
-        <div className='flex w-fit flex-col items-center'>
-          <button
-            className={cn(
-              'stroke-color border-none transition-all hover:text-indigo-600',
-              currentUserVote.data?.type === 'up' && 'text-indigo-600',
-            )}
-            disabled={createVoteMutation.isLoading}
-            onClick={(e) => {
-              e.preventDefault()
-              onVote('up')
-            }}
-          >
-            <ChevronUpIcon />
-          </button>
-          <p>{totalVotes}</p>
-          <button
-            className={cn(
-              'stroke-color border-none transition-all hover:text-indigo-600',
-              currentUserVote.data?.type === 'down' && 'text-indigo-600',
-            )}
-            disabled={createVoteMutation.isLoading}
-            onClick={(e) => {
-              e.preventDefault()
-              onVote('down')
-            }}
-          >
-            <ChevronDownIcon />
-          </button>
-        </div>
-        {/* post */}
-        <Link href={`/${post.id}`}>
-          <div className='ml-4'>
-            <div className='flex items-center'>
-              <Image
-                src='/person-placeholder.png'
-                width={24}
-                height={24}
-                alt='person-placeholder'
-                style={{ objectFit: 'contain' }}
-                className='max-h-[24px]'
-                priority
-              />
-              {/* post - createdBy, createdAt */}
-              <h3 className='ml-2 text-sm leading-5 text-gray-600'>
-                Posted by {post.userUsername}{' '}
-                {postMinutesDiff >= 60 ? `${postHoursDiff} hour ago` : `${postMinutesDiff} minutes ago`}
-              </h3>
-            </div>
-            {/* post - title */}
-            <h2 className='mt-[6px] font-medium leading-[14px] text-gray-900'>{post.title}</h2>
-            {/* post - content */}
-            <p className='mt-[6px] text-sm leading-5 text-gray-700'>{post.content}</p>
-          </div>
-        </Link>
+    <div className='mb-10 flex'>
+      {/* votes */}
+      <div className='flex w-fit flex-col items-center'>
+        <button
+          className={cn(
+            'stroke-color border-none transition-all hover:text-indigo-600',
+            currentUserVote.data?.type === 'up' && 'text-indigo-600',
+          )}
+          disabled={createVoteMutation.isLoading}
+          onClick={(e) => {
+            e.preventDefault()
+            onVote('up')
+          }}
+        >
+          <ChevronUpIcon />
+        </button>
+        <p>{totalVotes}</p>
+        <button
+          className={cn(
+            'stroke-color border-none transition-all hover:text-indigo-600',
+            currentUserVote.data?.type === 'down' && 'text-indigo-600',
+          )}
+          disabled={createVoteMutation.isLoading}
+          onClick={(e) => {
+            e.preventDefault()
+            onVote('down')
+          }}
+        >
+          <ChevronDownIcon />
+        </button>
       </div>
-    </>
+      {/* post */}
+      <Link href={`/${post.id}`}>
+        <div className='ml-4'>
+          <div className='flex items-center'>
+            <Image
+              src='/person-placeholder.png'
+              width={24}
+              height={24}
+              alt='person-placeholder'
+              style={{ objectFit: 'contain' }}
+              className='max-h-[24px]'
+              priority
+            />
+            {/* post - createdBy, createdAt */}
+            <h3 className='ml-2 text-sm leading-5 text-gray-600'>
+              Posted by {post.userUsername}{' '}
+              {postMinutesDiff >= 60 ? `${postHoursDiff} hour ago` : `${postMinutesDiff} minutes ago`}
+            </h3>
+          </div>
+          {/* post - title */}
+          <h2 className='mt-[6px] font-medium leading-[14px] text-gray-900'>{post.title}</h2>
+          {/* post - content */}
+          <p className='mt-[6px] text-sm leading-5 text-gray-700'>{post.content}</p>
+        </div>
+      </Link>
+    </div>
   )
 }

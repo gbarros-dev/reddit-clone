@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { api } from '@/trpc/react'
 import NewPost from './_components/new-post'
 import Post from './_components/post'
+import PostEmptyState from './_components/post-empty-state'
 
 export default function Home() {
   noStore()
@@ -19,13 +20,17 @@ export default function Home() {
     <div>
       {userId ? <NewPost onRefresh={postsQuery.refetch} /> : null}
 
-      {postsQuery.data?.map((post) => (
-        <Fragment key={post.id}>
-          <Post post={post} />
+      {postsQuery.data?.length ? (
+        postsQuery.data?.map((post) => (
+          <Fragment key={post.id}>
+            <Post post={post} />
 
-          <Separator className='my-10' />
-        </Fragment>
-      ))}
+            <Separator className='my-10' />
+          </Fragment>
+        ))
+      ) : (
+        <PostEmptyState />
+      )}
     </div>
   )
 }
