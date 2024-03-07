@@ -6,15 +6,15 @@ import { toast } from 'sonner'
 
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { type CommentBase } from '@/server/db/schema'
 import { api } from '@/trpc/react'
+import { type Comment } from '@/types/comment'
 import ChevronDownIcon from '../assets/icons/chevron-down-icon'
 import ChevronUpIcon from '../assets/icons/chevron-up-icon'
 import CommentIcon from '../assets/icons/comment-icon'
 import NewComment from './new-comment'
 
 type CommentViewProps = {
-  comment: CommentBase
+  comment: Comment
   parentComment?: boolean
 }
 
@@ -51,16 +51,16 @@ export default function CommentView({ comment, parentComment = false }: CommentV
     <div className='mt-6'>
       <div className='flex items-center'>
         <Image
-          src='/person-placeholder.png'
+          src={comment.user.profileImageUrl ?? '/person-placeholder.png'}
           width={24}
           height={24}
           alt='person-placeholder'
           style={{ objectFit: 'contain' }}
-          className='max-h-[24px]'
+          className='max-h-[24px] rounded-full'
           priority
         />
         <h3 className='ml-2 text-sm text-gray-600'>
-          {comment.userUsername}{' '}
+          {comment.user.username}{' '}
           {commentMinutesDiff >= 60 ? `${commentHoursDiff} hour ago` : `${commentMinutesDiff} minutes ago`}
         </h3>
       </div>

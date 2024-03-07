@@ -6,13 +6,13 @@ import { DateTime } from 'luxon'
 import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
-import { type PostBase } from '@/server/db/schema'
 import { api } from '@/trpc/react'
+import { type Post } from '@/types/post'
 import ChevronDownIcon from '../assets/icons/chevron-down-icon'
 import ChevronUpIcon from '../assets/icons/chevron-up-icon'
 
 type PostProps = {
-  post: PostBase
+  post: Post
 }
 
 export default function PostView({ post }: PostProps) {
@@ -84,17 +84,18 @@ export default function PostView({ post }: PostProps) {
         <div className='ml-4'>
           <div className='flex items-center'>
             <Image
-              src='/person-placeholder.png'
+              // src='/person-placeholder.png'
+              src={post.user.profileImageUrl ?? '/person-placeholder.png'}
               width={24}
               height={24}
               alt='person-placeholder'
               style={{ objectFit: 'contain' }}
-              className='max-h-[24px]'
+              className='max-h-[24px] rounded-full'
               priority
             />
             {/* post - createdBy, createdAt */}
             <h3 className='ml-2 text-sm leading-5 text-gray-600'>
-              Posted by {post.userUsername}{' '}
+              Posted by {post.user.username}{' '}
               {postMinutesDiff >= 60 ? `${postHoursDiff} hour ago` : `${postMinutesDiff} minutes ago`}
             </h3>
           </div>
