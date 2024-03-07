@@ -72,3 +72,20 @@ export const votesTable = createTable('votes', {
 export type Vote = InferSelectModel<typeof votesTable>
 
 export const voteSchema = createSelectSchema(votesTable)
+
+// users
+
+export const usersTable = createTable('users', {
+  id: varchar('id', { length: 32 }).primaryKey(),
+  username: text('username').notNull(),
+  firstName: text('first_name').notNull(),
+  lastName: text('last_name').notNull(),
+  profileImageUrl: text('profile_image_url').notNull(),
+  createdAt: timestamp('created_at')
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+})
+
+export type User = InferSelectModel<typeof usersTable>
+
+export const userSchema = createSelectSchema(usersTable)
