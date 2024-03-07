@@ -21,7 +21,7 @@ export default function Home() {
       {userId ? <NewPost onRefresh={postsQuery.refetch} /> : null}
 
       {postsQuery.data?.length ? (
-        postsQuery.data?.map((post) => (
+        postsQuery.data.map((post) => (
           <Fragment key={post.id}>
             <Post post={post} />
 
