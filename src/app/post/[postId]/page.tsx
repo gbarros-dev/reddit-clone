@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useAuth } from '@clerk/nextjs'
 import { toast } from 'sonner'
 
 import { Separator } from '@/components/ui/separator'
@@ -14,6 +15,7 @@ import ArrowLeftIcon from '../../assets/icons/arrow-left-icon'
 export default function PostDetails() {
   const { postId } = useParams()
   const router = useRouter()
+  const { userId } = useAuth()
 
   const postsQuery = api.post.getOne.useQuery({ id: postId as string })
   const commentsQuery = api.comment.getAllByPost.useQuery({ postId: postId as string })
@@ -49,12 +51,14 @@ export default function PostDetails() {
       <div className='mt-6'>
         {postsQuery.data ? <Post post={postsQuery.data} /> : ''}
 
-        <CommentInput
-          onSuccess={() => {
-            void postsQuery.refetch()
-            void commentsQuery.refetch()
-          }}
-        />
+        {userId ? (
+          <CommentInput
+            onSuccess={() => {
+              void postsQuery.refetch()
+              void commentsQuery.refetch()
+            }}
+          />
+        ) : null}
 
         <Separator className='my-10' />
 
