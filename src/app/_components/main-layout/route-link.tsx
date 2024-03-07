@@ -13,9 +13,9 @@ type RouteLinkProps = {
 export default function RouteLink({ item }: RouteLinkProps) {
   const pathname = usePathname()
 
-  const home = pathname.split('/')[1]?.length === 24
   const Icon = item.icon
-  const isCurent = (home && item.href === '/') || item.href === pathname
+  const isHome = item.href === '/' && (pathname === '/' || pathname.includes('/post/'))
+  const isCurent = item.href === pathname || isHome
 
   return (
     <Link

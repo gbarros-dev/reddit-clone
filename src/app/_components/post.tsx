@@ -80,7 +80,7 @@ export default function PostView({ post }: PostProps) {
         </button>
       </div>
       {/* post */}
-      <Link href={`/${post.id}`}>
+      <Link href={`/post/${post.id}`}>
         <div className='ml-4'>
           <div className='flex items-center'>
             <Image
