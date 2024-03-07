@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
@@ -24,8 +25,17 @@ export const postRouter = createTRPCRouter({
     })
   }),
   getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
-    return ctx.db.query.postsTable.findFirst({
+    const result = await ctx.db.query.postsTable.findFirst({
       where: eq(postsTable.id, input.id),
     })
+
+    if (!result) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Post not found',
+      })
+    }
+
+    return result
   }),
 })

@@ -1,6 +1,8 @@
 'use client'
 
+import { useCallback, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import { Separator } from '@/components/ui/separator'
 import { api } from '@/trpc/react'
@@ -15,6 +17,21 @@ export default function PostDetails() {
 
   const postsQuery = api.post.getOne.useQuery({ id: postId as string })
   const commentsQuery = api.comment.getAllByPost.useQuery({ postId: postId as string })
+
+  const onShowPostQueryError = useCallback(
+    async (error: string) => {
+      if (postsQuery.error) {
+        toast.error(error)
+      }
+    },
+    [postsQuery.error],
+  )
+
+  useEffect(() => {
+    if (postsQuery.error) {
+      void onShowPostQueryError(postsQuery.error.message)
+    }
+  }, [onShowPostQueryError, postsQuery.error])
 
   return (
     <div className='w-full'>
