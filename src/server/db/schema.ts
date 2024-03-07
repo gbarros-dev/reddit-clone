@@ -26,7 +26,7 @@ export const postTableRelations = relations(postsTable, ({ one, many }) => ({
   }),
 }))
 
-export type Post = InferSelectModel<typeof postsTable>
+export type PostBase = InferSelectModel<typeof postsTable>
 
 export const postSchema = createSelectSchema(postsTable)
 
@@ -55,7 +55,7 @@ export const commentsTableRelations = relations(commentsTable, ({ one }) => ({
   }),
 }))
 
-export type Comment = InferSelectModel<typeof commentsTable>
+export type CommentBase = InferSelectModel<typeof commentsTable>
 
 export const commentSchema = createSelectSchema(commentsTable)
 

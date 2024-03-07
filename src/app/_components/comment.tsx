@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { type Comment } from '@/server/db/schema'
+import { type CommentBase } from '@/server/db/schema'
 import { api } from '@/trpc/react'
 import ChevronDownIcon from '../assets/icons/chevron-down-icon'
 import ChevronUpIcon from '../assets/icons/chevron-up-icon'
@@ -14,7 +14,7 @@ import CommentIcon from '../assets/icons/comment-icon'
 import NewComment from './new-comment'
 
 type CommentViewProps = {
-  comment: Comment
+  comment: CommentBase
   parentComment?: boolean
 }
 

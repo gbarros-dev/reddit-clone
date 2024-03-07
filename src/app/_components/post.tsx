@@ -6,13 +6,13 @@ import { DateTime } from 'luxon'
 import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
-import { type Post } from '@/server/db/schema'
+import { type PostBase } from '@/server/db/schema'
 import { api } from '@/trpc/react'
 import ChevronDownIcon from '../assets/icons/chevron-down-icon'
 import ChevronUpIcon from '../assets/icons/chevron-up-icon'
 
 type PostProps = {
-  post: Post
+  post: PostBase
 }
 
 export default function PostView({ post }: PostProps) {
