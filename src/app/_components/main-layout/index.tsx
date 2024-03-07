@@ -19,7 +19,7 @@ const signedOutNavItems: Sections = [
   ...baseNavItems,
   {
     id: 'login',
-    title: 'Login',
+    title: 'Log In',
     icon: LogInIcon,
     href: '/log-in',
   },
