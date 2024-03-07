@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@clerk/nextjs'
 import { DateTime } from 'luxon'
 import { toast } from 'sonner'
@@ -16,6 +17,7 @@ type PostProps = {
 
 export default function PostView({ post }: PostProps) {
   const { userId } = useAuth()
+  const router = useRouter()
 
   const postMinutesDiff = parseInt(
     DateTime.fromJSDate(post.createdAt).diffNow().toFormat('m').replace('-', ''),
@@ -37,6 +39,14 @@ export default function PostView({ post }: PostProps) {
     },
   })
 
+  const onVote = (type: 'up' | 'down') => {
+    if (!userId) {
+      router.push('/log-in')
+    } else {
+      createVoteMutation.mutate({ postId: post.id, commentId: null, type })
+    }
+  }
+
   return (
     <>
       <div className='mb-10 flex'>
@@ -50,7 +60,7 @@ export default function PostView({ post }: PostProps) {
             disabled={createVoteMutation.isLoading}
             onClick={(e) => {
               e.preventDefault()
-              createVoteMutation.mutate({ postId: post.id, commentId: null, type: 'up' })
+              onVote('up')
             }}
           >
             <ChevronUpIcon />
@@ -64,7 +74,7 @@ export default function PostView({ post }: PostProps) {
             disabled={createVoteMutation.isLoading}
             onClick={(e) => {
               e.preventDefault()
-              createVoteMutation.mutate({ postId: post.id, commentId: null, type: 'down' })
+              onVote('down')
             }}
           >
             <ChevronDownIcon />
