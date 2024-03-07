@@ -12,16 +12,18 @@ export const postsTable = createTable('posts', {
   title: text('title'),
   content: text('content').notNull(),
   userId: varchar('user_id', { length: 36 }).notNull(),
-  userName: text('user_name').notNull(),
-  userUsername: text('user_username').notNull(),
   createdAt: timestamp('created_at')
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp('updatedAt').onUpdateNow(),
 })
 
-export const postTableRelations = relations(postsTable, ({ many }) => ({
+export const postTableRelations = relations(postsTable, ({ one, many }) => ({
   comments: many(commentsTable),
+  user: one(usersTable, {
+    fields: [postsTable.userId],
+    references: [usersTable.id],
+  }),
 }))
 
 export type Post = InferSelectModel<typeof postsTable>
@@ -36,8 +38,6 @@ export const commentsTable = createTable('comments', {
   postId: varchar('post_id', { length: 36 }).notNull(),
   commentId: varchar('comment_id', { length: 36 }),
   userId: varchar('user_id', { length: 36 }).notNull(),
-  userName: text('user_name').notNull(),
-  userUsername: text('user_username').notNull(),
   createdAt: timestamp('created_at')
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -48,6 +48,10 @@ export const commentsTableRelations = relations(commentsTable, ({ one }) => ({
   post: one(postsTable, {
     fields: [commentsTable.postId],
     references: [postsTable.id],
+  }),
+  user: one(usersTable, {
+    fields: [commentsTable.userId],
+    references: [usersTable.id],
   }),
 }))
 
