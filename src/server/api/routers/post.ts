@@ -1,4 +1,3 @@
-import { currentUser } from '@clerk/nextjs'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
@@ -8,14 +7,9 @@ import { postFormSchema } from '@/validators/posts'
 
 export const postRouter = createTRPCRouter({
   create: protectedProcedure.input(postFormSchema).mutation(async ({ ctx, input }) => {
-    const user = await currentUser()
-    const userFullName = user?.firstName + ' ' + user?.lastName
-
     await ctx.db.insert(postsTable).values({
       ...input,
       userId: ctx.auth.userId,
-      userName: userFullName,
-      userUsername: user!.username!,
     })
   }),
   getAll: publicProcedure.query(async ({ ctx }) => {

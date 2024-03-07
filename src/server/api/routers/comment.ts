@@ -1,4 +1,3 @@
-import { currentUser } from '@clerk/nextjs'
 import { and, desc, eq, sql } from 'drizzle-orm'
 import { z } from 'zod'
 
@@ -8,14 +7,9 @@ import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 export const commentRouter = createTRPCRouter({
   create: protectedProcedure.input(commentFormSchema).mutation(async ({ ctx, input }) => {
-    const user = await currentUser()
-    const userFullName = user?.firstName + ' ' + user?.lastName
-
     await ctx.db.insert(commentsTable).values({
       ...input,
       userId: ctx.auth.userId,
-      userName: userFullName,
-      userUsername: user!.username!,
     })
   }),
   getAllByPost: protectedProcedure.input(z.object({ postId: z.string() })).query(({ ctx, input }) => {
