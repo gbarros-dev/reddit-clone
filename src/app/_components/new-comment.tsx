@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -20,6 +21,7 @@ type NewCommentPops = {
 
 export default function NewComment({ parentCommentId, onSuccess }: NewCommentPops) {
   const { postId } = useParams()
+  const { user } = useUser()
 
   const commentMutation = api.comment.create.useMutation()
 
@@ -70,12 +72,12 @@ export default function NewComment({ parentCommentId, onSuccess }: NewCommentPop
       >
         <div className='flex p-4'>
           <Image
-            src='/person-placeholder.png'
+            src={user?.imageUrl ?? '/person-placeholder.png'}
             width={24}
             height={24}
             alt='person-placeholder'
             style={{ objectFit: 'contain' }}
-            className='max-h-[24px]'
+            className='max-h-[24px] rounded-full'
             priority
           />
           <div className='ml-4 flex w-full flex-col'>

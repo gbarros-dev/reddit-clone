@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useUser } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -16,6 +17,8 @@ type NewPostPops = {
 }
 
 export default function NewPost({ onRefresh }: NewPostPops) {
+  const { user } = useUser()
+
   const postMutation = api.post.create.useMutation()
 
   const form = useForm<PostFormSchema>({
@@ -50,12 +53,12 @@ export default function NewPost({ onRefresh }: NewPostPops) {
       >
         <div className='flex p-4'>
           <Image
-            src='/person-placeholder.png'
+            src={user?.imageUrl ?? '/person-placeholder.png'}
             width={24}
             height={24}
             alt='person-placeholder'
             style={{ objectFit: 'contain' }}
-            className='max-h-[24px]'
+            className='max-h-[24px] rounded-full'
             priority
           />
           <div className='ml-4 flex w-full flex-col'>
