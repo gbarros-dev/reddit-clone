@@ -15,12 +15,18 @@ export const commentRouter = createTRPCRouter({
   getAllByPost: protectedProcedure.input(z.object({ postId: z.string() })).query(({ ctx, input }) => {
     return ctx.db.query.commentsTable.findMany({
       where: and(eq(commentsTable.postId, input.postId), sql`${commentsTable.commentId} IS NULL`),
+      with: {
+        user: true,
+      },
       orderBy: desc(commentsTable.createdAt),
     })
   }),
   getAllByComment: protectedProcedure.input(z.object({ commentId: z.string() })).query(({ ctx, input }) => {
     return ctx.db.query.commentsTable.findMany({
       where: eq(commentsTable.commentId, input.commentId),
+      with: {
+        user: true,
+      },
       orderBy: desc(commentsTable.createdAt),
     })
   }),
