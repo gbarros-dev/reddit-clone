@@ -7,10 +7,10 @@ import { toast } from 'sonner'
 
 import { Separator } from '@/components/ui/separator'
 import { api } from '@/trpc/react'
-import CommentView from '../../_components/comment'
-import CommentInput from '../../_components/new-comment'
-import Post from '../../_components/post'
-import ArrowLeftIcon from '../../assets/icons/arrow-left-icon'
+import CommentView from '../../../_components/comment'
+import CommentInput from '../../../_components/new-comment'
+import Post from '../../../_components/post'
+import ArrowLeftIcon from '../../../assets/icons/arrow-left-icon'
 
 export default function PostDetails() {
   const { postId } = useParams()

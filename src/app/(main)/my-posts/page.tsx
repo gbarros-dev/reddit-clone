@@ -1,8 +1,8 @@
 'use client'
 
 import { api } from '@/trpc/react'
-import Post from '../_components/post'
-import PostEmptyState from '../_components/post-empty-state'
+import Post from '../../_components/post'
+import PostEmptyState from '../../_components/post-empty-state'
 
 export default function MyPosts() {
   const myPostsQuery = api.post.getAllByUser.useQuery()
