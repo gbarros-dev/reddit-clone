@@ -80,11 +80,10 @@ export default function PostView({ post }: PostProps) {
         </button>
       </div>
       {/* post */}
-      <Link href={`/post/${post.id}`}>
+      <Link href={`/feed/${post.id}`}>
         <div className='ml-4'>
           <div className='flex items-center'>
             <Image
-              // src='/person-placeholder.png'
               src={post.user.profileImageUrl ?? '/person-placeholder.png'}
               width={24}
               height={24}
