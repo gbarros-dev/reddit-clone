@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@clerk/nextjs'
 import { DateTime } from 'luxon'
 import { toast } from 'sonner'
@@ -20,6 +21,7 @@ type CommentViewProps = {
 
 export default function CommentView({ comment, parentComment = false }: CommentViewProps) {
   const { userId } = useAuth()
+  const router = useRouter()
 
   const [isReplyActive, setIsReplyActive] = useState<boolean>(false)
 
@@ -102,7 +104,11 @@ export default function CommentView({ comment, parentComment = false }: CommentV
           onClick={(e) => {
             e.preventDefault()
 
-            setIsReplyActive(!isReplyActive)
+            if (userId) {
+              setIsReplyActive(!isReplyActive)
+            } else {
+              router.push('/log-in')
+            }
           }}
         >
           <CommentIcon />
