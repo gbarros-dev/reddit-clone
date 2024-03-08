@@ -14,7 +14,7 @@ export default function RouteLink({ item }: RouteLinkProps) {
   const pathname = usePathname()
 
   const Icon = item.icon
-  const isHome = item.href === '/' && (pathname === '/' || pathname.includes('/post/'))
+  const isHome = item.href === '/feed' && (pathname === '/feed' || pathname.includes('/feed/'))
   const isCurent = item.href === pathname || isHome
 
   return (

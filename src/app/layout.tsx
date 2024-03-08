@@ -5,7 +5,6 @@ import { ClerkProvider } from '@clerk/nextjs'
 
 import { Toaster } from '@/components/ui/sonner'
 import { TRPCReactProvider } from '@/trpc/react'
-import MainLayout from './_components/main-layout'
 
 export const runtime = 'edge'
 
@@ -26,10 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang='en'>
         <body className={`font-sans ${inter.variable}`}>
           <TRPCReactProvider>
-            <MainLayout>
-              {children}
-              <Toaster />
-            </MainLayout>
+            {children}
+            <Toaster />
           </TRPCReactProvider>
         </body>
       </html>

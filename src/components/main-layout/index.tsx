@@ -11,7 +11,7 @@ const baseNavItems: Sections = [
     id: 'home',
     title: 'Home',
     icon: HomeIcon,
-    href: '/',
+    href: '/feed',
   },
 ]
 
