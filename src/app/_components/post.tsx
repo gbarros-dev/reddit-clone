@@ -27,7 +27,10 @@ export default function PostView({ post }: PostProps) {
   const votesQuery = api.vote.getAll.useQuery({ postId: post.id })
   const totalVotes = votesQuery.data?.totalVotes ?? 0
 
-  const currentUserVote = api.vote.getByCurrentUser.useQuery({ postId: post.id }, { enabled: !!userId })
+  const currentUserVote = api.vote.getByCurrentUser.useQuery(
+    { postId: post.id },
+    { enabled: !!userId, cacheTime: 0 },
+  )
 
   const createVoteMutation = api.vote.create.useMutation({
     onSuccess: () => {
