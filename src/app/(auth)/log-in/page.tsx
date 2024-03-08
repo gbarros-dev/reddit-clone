@@ -1,6 +1,6 @@
 'use client'
 
-import { SignInButton, useSignUp } from '@clerk/nextjs'
+import { useSignUp } from '@clerk/nextjs'
 import { toast } from 'sonner'
 
 import GoogleLogo from '../../assets/logo/google-logo'
@@ -39,12 +39,15 @@ export default function LogIn() {
           <p className='ml-3 text-gray-700'>Continue with Google</p>
         </button>
 
-        <SignInButton afterSignInUrl='/' afterSignUpUrl='/'>
-          <div className='mt-7 flex'>
-            <p className='text-gray-700'>Already have an account?</p>
-            <button className='ml-1 font-medium leading-6 text-[#172554]'>Sign-in</button>
-          </div>
-        </SignInButton>
+        <div className='mt-7 flex'>
+          <p className='text-gray-700'>Already have an account?</p>
+          <button
+            className='ml-1 font-medium leading-6 text-[#172554]'
+            onClick={() => handleSignUpWithGoogle()}
+          >
+            Sign-in
+          </button>
+        </div>
       </div>
     </div>
   )
