@@ -25,7 +25,7 @@ CLERK_SECRET_KEY='clerk secret key'
 CLERK_WEBHOOK_KEY='clerk webhook key'
 ```
 
-Ps.: we make use of Clerk webhook to create a user on our database whenever it is created on Clerk. We store just basic information so we can provide some user inforamtions regarding name, username and account image.
+Ps.: we make use of Clerk webhook to create a user on our database whenever it is created on Clerk. We store just basic information so we can provide some user informations regarding name, username and account image.
 
 ## How do I deploy this?
 
