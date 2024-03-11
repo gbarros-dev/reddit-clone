@@ -20,6 +20,7 @@ export const postsTable = createTable('posts', {
 
 export const postTableRelations = relations(postsTable, ({ one, many }) => ({
   comments: many(commentsTable),
+  votes: many(votesTable),
   user: one(usersTable, {
     fields: [postsTable.userId],
     references: [usersTable.id],
@@ -44,10 +45,18 @@ export const commentsTable = createTable('comments', {
   updatedAt: timestamp('updatedAt').onUpdateNow(),
 })
 
-export const commentsTableRelations = relations(commentsTable, ({ one }) => ({
+export const commentsTableRelations = relations(commentsTable, ({ one, many }) => ({
   post: one(postsTable, {
     fields: [commentsTable.postId],
     references: [postsTable.id],
+  }),
+  parent: one(commentsTable, {
+    relationName: 'parent',
+    fields: [commentsTable.commentId],
+    references: [commentsTable.id],
+  }),
+  nestedComments: many(commentsTable, {
+    relationName: 'parent',
   }),
   user: one(usersTable, {
     fields: [commentsTable.userId],
@@ -72,6 +81,13 @@ export const votesTable = createTable('votes', {
     .notNull(),
   updatedAt: timestamp('updatedAt').onUpdateNow(),
 })
+
+export const votesTableRelations = relations(votesTable, ({ one }) => ({
+  post: one(postsTable, {
+    fields: [votesTable.postId],
+    references: [postsTable.id],
+  }),
+}))
 
 export type Vote = InferSelectModel<typeof votesTable>
 

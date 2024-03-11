@@ -17,9 +17,10 @@ import NewComment from './new-comment'
 type CommentViewProps = {
   comment: Comment
   parentComment?: boolean
+  onRefresh: () => void
 }
 
-export default function CommentView({ comment, parentComment = false }: CommentViewProps) {
+export default function CommentView({ comment, parentComment = false, onRefresh }: CommentViewProps) {
   const { userId } = useAuth()
   const router = useRouter()
 
@@ -31,8 +32,6 @@ export default function CommentView({ comment, parentComment = false }: CommentV
   const commentHoursDiff = parseInt(
     DateTime.fromJSDate(comment.createdAt).diffNow().toFormat('h').replace('-', ''),
   )
-
-  const commentsQuery = api.comment.getAllByComment.useQuery({ commentId: comment.id })
 
   const votesQuery = api.vote.getAll.useQuery({ commentId: comment.id })
   const totalVotes = votesQuery.data?.totalVotes ?? 0
@@ -53,7 +52,7 @@ export default function CommentView({ comment, parentComment = false }: CommentV
     <div className='mt-6'>
       <div className='flex items-center'>
         <Image
-          src={comment.user.profileImageUrl ?? '/person-placeholder.png'}
+          src={comment.user?.profileImageUrl ?? '/person-placeholder.png'}
           width={24}
           height={24}
           alt='person-placeholder'
@@ -62,7 +61,7 @@ export default function CommentView({ comment, parentComment = false }: CommentV
           priority
         />
         <h3 className='ml-2 text-sm text-gray-600'>
-          {comment.user.username}{' '}
+          {comment.user?.username}{' '}
           {commentMinutesDiff >= 60 ? `${commentHoursDiff} hour ago` : `${commentMinutesDiff} minutes ago`}
         </h3>
       </div>
@@ -121,17 +120,19 @@ export default function CommentView({ comment, parentComment = false }: CommentV
           <NewComment
             parentCommentId={comment.id}
             onSuccess={() => {
-              void commentsQuery.refetch()
+              onRefresh()
               setIsReplyActive(false)
             }}
           />
         </div>
       ) : null}
 
-      {commentsQuery.data?.length ? (
+      {comment.nestedComments?.length ? (
         <>
           <div className='ml-8'>
-            {commentsQuery.data?.map((comment) => <CommentView key={comment.id} comment={comment} />)}
+            {comment.nestedComments.map((comment) => (
+              <CommentView key={comment.id} comment={comment} onRefresh={onRefresh} />
+            ))}
           </div>
           {parentComment ? <Separator className='my-6' /> : null}
         </>

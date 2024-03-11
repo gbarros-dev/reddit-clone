@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { api } from '@/trpc/react'
 import CommentView from '../../../_components/comment'
 import CommentInput from '../../../_components/new-comment'
-import Post from '../../../_components/post'
+import PostComponent from '../../../_components/post'
 import ArrowLeftIcon from '../../../assets/icons/arrow-left-icon'
 
 export default function PostDetails() {
@@ -17,23 +17,22 @@ export default function PostDetails() {
   const router = useRouter()
   const { userId } = useAuth()
 
-  const postsQuery = api.post.getOne.useQuery({ id: postId as string })
-  const commentsQuery = api.comment.getAllByPost.useQuery({ postId: postId as string })
+  const newPostsQuery = api.post.getOneWithComments.useQuery({ id: postId as string })
 
   const onShowPostQueryError = useCallback(
     async (error: string) => {
-      if (postsQuery.error) {
+      if (newPostsQuery.error) {
         toast.error(error)
       }
     },
-    [postsQuery.error],
+    [newPostsQuery.error],
   )
 
   useEffect(() => {
-    if (postsQuery.error) {
-      void onShowPostQueryError(postsQuery.error.message)
+    if (newPostsQuery.error) {
+      void onShowPostQueryError(newPostsQuery.error.message)
     }
-  }, [onShowPostQueryError, postsQuery.error])
+  }, [onShowPostQueryError, newPostsQuery.error])
 
   return (
     <div className='w-full'>
@@ -49,13 +48,13 @@ export default function PostDetails() {
       </button>
 
       <div className='mt-6'>
-        {postsQuery.data ? <Post post={postsQuery.data} /> : ''}
+        {newPostsQuery.data ? <PostComponent post={newPostsQuery.data} /> : ''}
 
         {userId ? (
           <CommentInput
             onSuccess={() => {
-              void postsQuery.refetch()
-              void commentsQuery.refetch()
+              void newPostsQuery.refetch()
+              // void commentsQuery.refetch()
             }}
           />
         ) : null}
@@ -65,8 +64,8 @@ export default function PostDetails() {
         <div>
           <h3 className='text-sm font-medium leading-5 text-gray-800'>All comments</h3>
 
-          {commentsQuery.data?.map((comment) => (
-            <CommentView key={comment.id} comment={comment} parentComment />
+          {newPostsQuery.data?.comments?.map((comment) => (
+            <CommentView key={comment.id} comment={comment} parentComment onRefresh={newPostsQuery.refetch} />
           ))}
         </div>
       </div>
