@@ -67,10 +67,10 @@ export default function NewComment({ parentCommentId, onSuccess }: NewCommentPop
   return (
     <Form {...form}>
       <form
-        className='shadow-custom mb-10 min-h-[149px] rounded-xl border border-gray-200'
+        className='shadow-custom mb-10 min-h-[113px] rounded-xl border border-gray-200'
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className='flex p-4'>
+        <div className='flex px-4 pb-3 pt-4'>
           <Image
             src={user?.imageUrl ?? '/person-placeholder.png'}
             width={24}
@@ -88,7 +88,7 @@ export default function NewComment({ parentCommentId, onSuccess }: NewCommentPop
                 <FormItem>
                   <FormControl>
                     <Input
-                      className='mt-3 border-b border-gray-200'
+                      className='border-b border-gray-200 pb-3'
                       placeholder='Comment your thoughts'
                       {...field}
                       value={field?.value ?? ''}
