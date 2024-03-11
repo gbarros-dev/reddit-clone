@@ -1,9 +1,9 @@
 import { TRPCError } from '@trpc/server'
-import { eq } from 'drizzle-orm'
+import { eq, isNull } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/api/trpc'
-import { postsTable } from '@/server/db/schema'
+import { commentsTable, postsTable } from '@/server/db/schema'
 import { postFormSchema } from '@/validators/posts'
 
 export const postRouter = createTRPCRouter({
@@ -46,5 +46,51 @@ export const postRouter = createTRPCRouter({
     }
 
     return result
+  }),
+  getOneWithComments: publicProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    const postWithNestedComments = await ctx.db.query.postsTable.findFirst({
+      columns: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
+        userId: true,
+      },
+      where: eq(postsTable.id, input.id),
+      with: {
+        comments: {
+          where: isNull(commentsTable.commentId),
+          with: {
+            nestedComments: {
+              with: {
+                nestedComments: {
+                  with: {
+                    nestedComments: {
+                      with: {
+                        user: true,
+                      },
+                    },
+                    user: true,
+                  },
+                },
+                user: true,
+              },
+            },
+            user: true,
+          },
+        },
+        user: true,
+      },
+    })
+
+    if (!postWithNestedComments) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Post not found',
+      })
+    }
+
+    return postWithNestedComments
   }),
 })
