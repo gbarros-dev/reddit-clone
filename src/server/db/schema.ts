@@ -51,12 +51,12 @@ export const commentsTableRelations = relations(commentsTable, ({ one, many }) =
     references: [postsTable.id],
   }),
   parent: one(commentsTable, {
-    relationName: 'parent', // Relation name to disambiguate the self-referencing relation
+    relationName: 'parent',
     fields: [commentsTable.commentId],
     references: [commentsTable.id],
   }),
   nestedComments: many(commentsTable, {
-    relationName: 'parent', // Relation name to disambiguate the self-referencing relation
+    relationName: 'parent',
   }),
   user: one(usersTable, {
     fields: [commentsTable.userId],
