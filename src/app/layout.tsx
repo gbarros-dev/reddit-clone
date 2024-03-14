@@ -6,7 +6,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from '@/components/ui/sonner'
 import { TRPCReactProvider } from '@/trpc/react'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 const inter = Inter({
   subsets: ['latin'],
